@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ColorPicker</title>
+  <style>
+    *, *:before, *:after {
+      box-sizing: border-box;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    button {
+      position: fixed;
+      transform: translate(-50%, -50%);
+      border-radius: 10px;
+      border: 2px solid #000;
+      padding: 10px 15px;
+      font-size: 25px;
+    }
+
+    #colorResult {
+      position: absolute;
+      pointer-events: none;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <button id="colorPickerButton">&#x1F50E ColorPicker</button>
+  </div>
+  <div id="colorResult"></div>  
+  <script src="script.js"></script>
+</body>
+</html>
