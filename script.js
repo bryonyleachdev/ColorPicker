@@ -26,6 +26,9 @@ document.getElementById('colorPickerButton').addEventListener('click', async () 
 
   // Hide the result when clicking anywhere on the screen
   document.addEventListener('click', hideResult);
+
+  // Add event listener for Ctrl+C to copy color result
+  document.addEventListener('keydown', copyOnCtrlC);
 });
 
 document.addEventListener('mousemove', (event) => {
@@ -46,4 +49,20 @@ function hideResult(event) {
   const colorResult = document.getElementById('colorResult');
   colorResult.style.display = 'none';
   document.removeEventListener('click', hideResult);
+}
+
+function copyOnCtrlC(event) {
+  if (event.ctrlKey && event.key === 'c') {
+    const colorResult = document.getElementById('colorResult');
+    const text = colorResult.textContent;
+    const colorCode = text.match(/#[0-9a-fA-F]{6}/); // Extract the color code
+    if (colorCode) {
+      const plainColorCode = colorCode[0].substring(1); // Remove the '#' character
+      navigator.clipboard.writeText(plainColorCode).then(() => {
+        console.log('Color copied to clipboard:', plainColorCode);
+      }).catch(err => {
+        console.error('Failed to copy text to clipboard:', err);
+      });
+    }
+  }
 }
