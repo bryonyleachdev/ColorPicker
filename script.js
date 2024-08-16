@@ -1,3 +1,16 @@
+// Function to calculate the luminance of a hex color
+function getLuminance(hexColor) {
+  const rgb = parseInt(hexColor.slice(1), 16); // Convert hex to integer
+  const r = (rgb >> 16) & 0xff; // Extract red
+  const g = (rgb >>  8) & 0xff; // Extract green
+  const b = (rgb >>  0) & 0xff; // Extract blue
+
+  // Calculate luminance in the sRGB color space
+  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+  return luminance / 255;
+}
+
+// Function to sample color from the screen using the EyeDropper API
 async function sampleColorFromScreen(abortController) {
   const eyeDropper = new EyeDropper();
   try {
@@ -8,6 +21,7 @@ async function sampleColorFromScreen(abortController) {
   }
 }
 
+// Event listener for the color picker button
 document.getElementById('colorPickerButton').addEventListener('click', async () => {
   const abortController = new AbortController();
   const color = await sampleColorFromScreen(abortController);
@@ -16,8 +30,12 @@ document.getElementById('colorPickerButton').addEventListener('click', async () 
   if (color) {
     colorResult.textContent = `Selected color: ${color}`;
     colorResult.style.backgroundColor = color;
+
+    const luminance = getLuminance(color);
+    colorResult.style.color = luminance > 0.7 ? 'grey' : 'black';
   } else {
     colorResult.style.backgroundColor = 'transparent';
+    colorResult.style.color = 'black';
   }
   colorResult.style.display = 'block';
 
