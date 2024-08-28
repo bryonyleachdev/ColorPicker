@@ -21,33 +21,43 @@ async function sampleColorFromScreen(abortController) {
   }
 }
 
-// Event listener for the color picker button
-document.getElementById('colorPickerButton').addEventListener('click', async () => {
-  const abortController = new AbortController();
-  const color = await sampleColorFromScreen(abortController);
+// Check if the EyeDropper API is supported
+if ('EyeDropper' in window) {
+  // Attach event listeners only if the API is supported
+  document.getElementById('colorPickerButton').addEventListener('click', async () => {
+    const abortController = new AbortController();
+    const color = await sampleColorFromScreen(abortController);
 
+    const colorResult = document.getElementById('colorResult');
+    if (color) {
+      colorResult.textContent = `Selected color: ${color}`;
+      colorResult.style.backgroundColor = color;
+
+      const luminance = getLuminance(color);
+      colorResult.style.color = luminance > 0.7 ? 'grey' : 'black';
+    } else {
+      colorResult.style.backgroundColor = 'transparent';
+      colorResult.style.color = 'black';
+    }
+    colorResult.style.display = 'block';
+
+    // Add event listener to hide result on Escape key press
+    document.addEventListener('keydown', hideOnEscape);
+
+    // Hide the result when clicking anywhere on the screen
+    document.addEventListener('click', hideResult);
+
+    // Add event listener for Ctrl+C to copy color result
+    document.addEventListener('keydown', copyOnCtrlC);
+  });
+} else {
+  // Display "Browser not supported" message if the API is not supported
   const colorResult = document.getElementById('colorResult');
-  if (color) {
-    colorResult.textContent = `Selected color: ${color}`;
-    colorResult.style.backgroundColor = color;
-
-    const luminance = getLuminance(color);
-    colorResult.style.color = luminance > 0.7 ? 'grey' : 'black';
-  } else {
-    colorResult.style.backgroundColor = 'transparent';
-    colorResult.style.color = 'black';
-  }
+  colorResult.textContent = "Browser not supported";
+  colorResult.style.backgroundColor = 'transparent';
+  colorResult.style.color = 'red';
   colorResult.style.display = 'block';
-
-  // Add event listener to hide result on Escape key press
-  document.addEventListener('keydown', hideOnEscape);
-
-  // Hide the result when clicking anywhere on the screen
-  document.addEventListener('click', hideResult);
-
-  // Add event listener for Ctrl+C to copy color result
-  document.addEventListener('keydown', copyOnCtrlC);
-});
+}
 
 document.addEventListener('mousemove', (event) => {
   const colorResult = document.getElementById('colorResult');
