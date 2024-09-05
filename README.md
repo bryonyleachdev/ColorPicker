@@ -1,5 +1,5 @@
 # ColorPicker
-Simple RGB color picker web app.
+RGB color picker web app.
 
 To Use:
 
@@ -8,7 +8,7 @@ Open ColorPicker.html in a browser.
 Click the "ColorPicker" button to open the eyedropper magnifying cursor.
 
 Sample colors from within or around the browser window
-(Restore Down the window to sample pages behind).
+(Reduce the ColorPicker window size to sample pages behind).
 
 Click to display the color's hex code.
 
